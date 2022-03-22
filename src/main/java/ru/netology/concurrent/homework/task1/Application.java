@@ -1,15 +1,13 @@
 package ru.netology.concurrent.homework.task1;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static ru.netology.concurrent.homework.task1.Staff.STAFF;
 import static ru.netology.concurrent.homework.task1.Pbx.onWork;
 
 public class Application {
-    private static final List<String> staff = Arrays.asList("John", "Mike", "Alex", "Amanda", "Lex", "Pamela", "Judy", "Rajesh", "Shang", "Lucy");
-    private static final ConcurrentLinkedQueue<Integer> queue = new ConcurrentLinkedQueue<>();
-    private static final Pbx pbx = new Pbx("PBX", queue);
+    private static final ConcurrentLinkedQueue<Integer> REQUEST_QUEUE = new ConcurrentLinkedQueue<>();
+    private static final Pbx pbx = new Pbx("PBX", REQUEST_QUEUE);
 
     public static void main(String[] args) {
         startShift();
@@ -27,7 +25,7 @@ public class Application {
     private static void startShift() {
         pbx.start();
         delay();
-        System.out.println("On hold are " + queue.size() + " calls!");
+        System.out.println("On hold are " + REQUEST_QUEUE.size() + " calls!");
         staffInOffice();
     }
 
@@ -36,8 +34,8 @@ public class Application {
     }
 
     private static void staffInOffice() {
-        for (String s : staff) {
-            new Staff(s, queue).start();
+        for (String s : STAFF) {
+            new Staff(s, REQUEST_QUEUE).start();
         }
     }
 }

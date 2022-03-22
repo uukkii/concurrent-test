@@ -1,8 +1,11 @@
 package ru.netology.concurrent.homework.task1;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Staff extends Thread {
+    protected static final List<String> STAFF = Arrays.asList("John", "Mike", "Alex", "Amanda", "Lex", "Pamela", "Judy", "Rajesh", "Shang", "Lucy");
     private static final int ON_LINE = 4000;
     private final ConcurrentLinkedQueue<Integer> queue;
 
@@ -15,7 +18,8 @@ public class Staff extends Thread {
     public void run() {
         while (!queue.isEmpty()) {
             try {
-                System.out.printf("\nSpecialist %s is answering on request # %d", Thread.currentThread().getName(), queue.poll());
+                Integer nextElementOfQueue = queue.poll();
+                System.out.printf("\nSpecialist %s is answering on request # %d", Thread.currentThread().getName(), nextElementOfQueue);
                 Thread.sleep(ON_LINE);
             } catch (InterruptedException exception) {
                 exception.printStackTrace();
